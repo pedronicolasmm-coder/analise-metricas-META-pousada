@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Meta Ads · Pousada das Missões</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #1d1d1f;
+    --gray: #6e6e73;
+    --gray-light: #f5f5f7;
+    --gray-line: #d2d2d7;
+    --green: #2d6a4f;
+    --green-light: #e8f2ec;
+    --amber: #92600a;
+    --amber-light: #fef3dc;
+    --red: #c0392b;
+    --red-light: #fdecea;
+    --white: #ffffff;
+  }
+  html { font-size: 15px; }
+  body {
+    background: var(--gray-light);
+    color: var(--black);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--gray-line);
+    padding: 0 32px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-title { font-size: 14px; font-weight: 600; color: var(--black); }
+  .nav-sub { font-size: 12px; color: var(--gray); }
+
+  .container { max-width: 1000px; margin: 0 auto; padding: 40px 24px; }
+
+  /* HEADER */
+  .page-header { margin-bottom: 40px; }
+  .page-header h1 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  .page-header p { font-size: 14px; color: var(--gray); }
+
+  /* KPI GRID */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .kpi {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 22px 20px;
+    border: 1px solid var(--gray-line);
+  }
+  .kpi-label { font-size: 11px; font-weight: 500; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+  .kpi-value { font-size: 1.8rem; font-weight: 600; color: var(--black); letter-spacing: -0.02em; line-height: 1; margin-bottom: 4px; }
+  .kpi-sub { font-size: 12px; color: var(--gray); }
+  .kpi.green .kpi-value { color: var(--green); }
+  .kpi.amber .kpi-value { color: var(--amber); }
+
+  /* DESTAQUE */
+  .destaque-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .destaque {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 22px 20px;
+    border: 1px solid var(--gray-line);
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .destaque-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .destaque-icon.green { background: var(--green-light); }
+  .destaque-icon.amber { background: var(--amber-light); }
+  .destaque-icon.red { background: var(--red-light); }
+  .destaque-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .destaque-value { font-size: 1.1rem; font-weight: 600; color: var(--green); margin-bottom: 4px; }
+  .destaque-value.red { color: var(--red); }
+  .destaque-desc { font-size: 12px; color: var(--gray); line-height: 1.5; }
+
+  /* OBSERVAÇÕES */
+  .obs-card {
+    background: var(--amber-light);
+    border-radius: 14px;
+    padding: 22px 20px;
+    border: 1px solid #e8c97a;
+    margin-bottom: 32px;
+  }
+  .obs-title { font-size: 12px; font-weight: 600; color: var(--amber); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px; }
+  .obs-list { display: flex; flex-direction: column; gap: 10px; }
+  .obs-item { display: flex; gap: 10px; align-items: flex-start; }
+  .obs-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); flex-shrink: 0; margin-top: 6px; }
+  .obs-text { font-size: 13px; color: var(--black); line-height: 1.6; }
+
+  /* TABELA */
+  .table-card {
+    background: var(--white);
+    border-radius: 14px;
+    border: 1px solid var(--gray-line);
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .table-header {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--gray-line);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--black);
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gray);
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: var(--gray-light);
+    border-bottom: 1px solid var(--gray-line);
+  }
+  td {
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--black);
+    border-bottom: 1px solid var(--gray-line);
+    vertical-align: middle;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafafa; }
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+  .tag.concluido { background: var(--green-light); color: var(--green); }
+  .tag.pausado { background: var(--amber-light); color: var(--amber); }
+  .tag.inativo { background: var(--gray-light); color: var(--gray); }
+  .custo-bom { color: var(--green); font-weight: 600; }
+  .custo-ruim { color: var(--red); font-weight: 600; }
+
+  /* FOOTER */
+  footer { text-align: center; padding: 24px; font-size: 11px; color: var(--gray); }
+
+  @media (max-width: 700px) {
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .destaque-grid { grid-template-columns: 1fr; }
+    table { font-size: 12px; }
+    th, td { padding: 8px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-title">Dashboard Meta Ads · Pousada das Missões</span>
+  <span class="nav-sub">Mai – Set 2026</span>
+</nav>
+
+<div class="container">
+
+  <div class="page-header">
+    <h1>Resumo de anúncios</h1>
+    <p>Maio a setembro de 2026 · 9 campanhas analisadas · Fonte: Meta Business Suite</p>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Total investido</div>
+      <div class="kpi-value">R$2.431</div>
+      <div class="kpi-sub">Mai a ago/2026</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">Conversas geradas</div>
+      <div class="kpi-value">1.369</div>
+      <div class="kpi-sub">Mensagens iniciadas</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">Melhor CPR</div>
+      <div class="kpi-value">R$1,16</div>
+      <div class="kpi-sub">Custo por conversa</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Visualizadores totais</div>
+      <div class="kpi-value">266k</div>
+      <div class="kpi-sub">Pessoas únicas alcançadas</div>
+    </div>
+  </div>
+
+  <!-- DESTAQUES -->
+  <div class="destaque-grid">
+    <div class="destaque">
+      <div class="destaque-icon green">🏆</div>
+      <div>
+        <div class="destaque-title">Melhor anúncio</div>
+        <div class="destaque-value">R$1,16 por conversa</div>
+        <div class="destaque-desc">"2 dias em São Miguel" · 430 conversas · 81k visualizadores · Mai/2026</div>
+      </div>
+    </div>
+    <div class="destaque">
+      <div class="destaque-icon green">📈</div>
+      <div>
+        <div class="destaque-title">Maior alcance</div>
+        <div class="destaque-value">124,5k visualizações</div>
+        <div class="destaque-desc">"Tem gente que chega..." · Jun/2026 · 311 conversas a R$2,33</div>
+      </div>
+    </div>
+    <div class="destaque">
+      <div class="destaque-icon red">⚠️</div>
+      <div>
+        <div class="destaque-title">Pior custo por resultado</div>
+        <div class="destaque-value red">R$12,06 por conversa</div>
+        <div class="destaque-desc">"Patrimônio Mundial de dia..." · Post IG · Ago/2026 · apenas 13 conversas</div>
+      </div>
+    </div>
+    <div class="destaque">
+      <div class="destaque-icon amber">🔄</div>
+      <div>
+        <div class="destaque-title">Criativo mais consistente</div>
+        <div class="destaque-value">R$1,17 · R$1,72 · R$1,96</div>
+        <div class="destaque-desc">"Do Patrimônio Mundial..." repetido 3x em datas diferentes com desempenho estável</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABELA -->
+  <div class="table-card">
+    <div class="table-header">Todos os anúncios · Mai–Ago 2026</div>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead>
+          <tr>
+            <th>Anúncio</th>
+            <th>Formato</th>
+            <th>Data</th>
+            <th>Status</th>
+            <th>Visualizações</th>
+            <th>Visualizadores</th>
+            <th>Resultado</th>
+            <th>Gasto</th>
+            <th>Custo/resultado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>"2 dias em São Miguel..."</td>
+            <td>Post FB</td>
+            <td>19/mai</td>
+            <td><span class="tag concluido">Concluído</span></td>
+            <td>133,5k</td>
+            <td>81.386</td>
+            <td>430 conversas</td>
+            <td>R$499,80</td>
+            <td><span class="custo-bom">R$1,16</span></td>
+          </tr>
+          <tr>
+            <td>"Do Patrimônio Mundial..."</td>
+            <td>Reel FB</td>
+            <td>22/jul</td>
+            <td><span class="tag concluido">Concluído</span></td>
+            <td>52,8k</td>
+            <td>28.700</td>
+            <td>238 conversas</td>
+            <td>R$279,38</td>
+            <td><span class="custo-bom">R$1,17</span></td>
+          </tr>
+          <tr>
+            <td>"Do Patrimônio Mundial..."</td>
+            <td>Reel FB</td>
+            <td>18/ago</td>
+            <td><span class="tag concluido">Concluído</span></td>
+            <td>57,8k</td>
+            <td>34.354</td>
+            <td>166 conversas</td>
+            <td>R$285,76</td>
+            <td><span class="custo-bom">R$1,72</span></td>
+          </tr>
+          <tr>
+            <td>"Tem gente que chega..."</td>
+            <td>Anúncio</td>
+            <td>17/jun</td>
+            <td><span class="tag pausado">Pausado</span></td>
+            <td>124,5k</td>
+            <td>61.759</td>
+            <td>311 conversas</td>
+            <td>R$723,35</td>
+            <td>R$2,33</td>
+          </tr>
+          <tr>
+            <td>"Do Patrimônio Mundial..."</td>
+            <td>Reel FB</td>
+            <td>27/ago</td>
+            <td><span class="tag inativo">Não ativo</span></td>
+            <td>69,7k</td>
+            <td>41.066</td>
+            <td>197 conversas</td>
+            <td>R$385,92</td>
+            <td>R$1,96</td>
+          </tr>
+          <tr>
+            <td>"Tem lugares que existem..."</td>
+            <td>Reel FB</td>
+            <td>31/ago</td>
+            <td><span class="tag inativo">Não ativo</span></td>
+            <td>11,0k</td>
+            <td>7.580</td>
+            <td>8 conversas</td>
+            <td>R$55,38</td>
+            <td>R$6,92</td>
+          </tr>
+          <tr>
+            <td>"Se você monta roteiros..."</td>
+            <td>Post IG</td>
+            <td>18/mai</td>
+            <td><span class="tag concluido">Concluído</span></td>
+            <td>4,8k</td>
+            <td>3.711</td>
+            <td>6 conversas</td>
+            <td>R$42,76</td>
+            <td>R$7,13</td>
+          </tr>
+          <tr>
+            <td>"Patrimônio Mundial de dia..."</td>
+            <td>Post IG</td>
+            <td>14/ago</td>
+            <td><span class="tag concluido">Concluído</span></td>
+            <td>12,6k</td>
+            <td>6.756</td>
+            <td>13 conversas</td>
+            <td>R$156,85</td>
+            <td><span class="custo-ruim">R$12,06</span></td>
+          </tr>
+          <tr>
+            <td>"Tem gente que chega..." (Reel)</td>
+            <td>Reel FB</td>
+            <td>17/jun</td>
+            <td><span class="tag pausado">Pausado</span></td>
+            <td>920</td>
+            <td>797</td>
+            <td>582 engajamentos</td>
+            <td>R$1,98</td>
+            <td>R$0,003</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<footer>Pedro Munareto · Gestor de Instagram e Tráfego Pago · Pousada das Missões · 2026</footer>
+
+</body>
+</html>
